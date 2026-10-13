@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriConnect - Smart Agriculture Marketplace & Supply Chain</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- AgriConnect Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <span>Agri<span class="text-gradient">Connect</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="pages/marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="#categories-section" class="nav-link">Categories</a></li>
+        <li><a href="#ai-section" class="nav-link">AI Engine</a></li>
+        <li><a href="#farmers-section" class="nav-link">Farmers</a></li>
+        <li><a href="#supply-chain-section" class="nav-link">Supply Chain</a></li>
+        <span id="role-nav-links"></span>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Cart Badge -->
+        <a href="pages/customer.html" class="cart-btn-wrapper btn btn-secondary btn-icon" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="nav-cart-count" class="cart-badge-count">0</span>
+        </a>
+
+        <!-- Dynamic Auth Buttons or User Avatar -->
+        <div id="nav-auth-actions"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-leaf"></i> 100% Direct From Certified Indian Farmers
+          </div>
+          <h1 class="hero-title">
+            Smart Agriculture <br>
+            <span class="text-gradient">Marketplace & Supply Chain</span>
+          </h1>
+          <p class="hero-description">
+            Directly connect with local growers of organic vegetables, heritage grains, cold-pressed oils, and spices. Track farm-to-door temperature-controlled cold chain shipments in real time.
+          </p>
+
+          <!-- Search Bar -->
+          <form class="hero-search-box" onsubmit="App.handleHomeSearch(event)">
+            <i class="fa-solid fa-magnifying-glass" style="color: var(--primary-600); margin-right: 0.75rem;"></i>
+            <input type="text" id="home-search-input" placeholder="Search 60+ fresh harvests (e.g. Basmati, Alphonso, Turmeric, Millets)...">
+            <button type="submit" class="btn btn-primary">Find Harvest</button>
+          </form>
+
+          <!-- Animated Live Stats -->
+          <div class="hero-stats-row">
+            <div class="hero-stat-item">
+              <div class="stat-num" id="stat-farmers">5,000+</div>
+              <div class="stat-label">Verified Farmers</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="stat-num" id="stat-products">60+</div>
+              <div class="stat-label">Crop Varieties</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="stat-num" id="stat-ontime">99.4%</div>
+              <div class="stat-label">On-Time Transit</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="stat-num" id="stat-earnings">₹2.8 Cr</div>
+              <div class="stat-label">Farmer Direct Payouts</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Illustration -->
+        <div class="hero-visual-card">
+          <img class="hero-main-img" src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=80" alt="Lush agricultural farmland">
+          
+          <div class="hero-floating-card top-right">
+            <div style="width: 2.75rem; height: 2.75rem; background: var(--primary-100); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--primary-800); font-size: 1.25rem;">
+              <i class="fa-solid fa-temperature-arrow-down"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.875rem;">Active Cold Chain</div>
+              <div style="font-size: 0.75rem; color: var(--slate-500);">4°C Climate Controlled</div>
+            </div>
+          </div>
+
+          <div class="hero-floating-card bottom-left">
+            <div style="width: 2.75rem; height: 2.75rem; background: var(--earth-100); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--earth-700); font-size: 1.25rem;">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.875rem;">Zero Middlemen</div>
+              <div style="font-size: 0.75rem; color: var(--slate-500);">Direct Farmer Value Transfer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Agricultural Categories Section -->
+  <section id="categories-section" style="padding: 4.5rem 0; background-color: #ffffff;">
+    <div class="container">
+      <div style="text-align: center; max-width: 640px; margin: 0 auto 3rem;">
+        <span class="badge badge-success" style="margin-bottom: 0.75rem;">Explore Diversity</span>
+        <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Harvest Categories</h2>
+        <p class="text-muted">From nutritional millets to GI-tagged Alphonso mangoes and medicinal herbs, discover clean agriculture cultivated with passion.</p>
+      </div>
+
+      <div id="home-categories-grid" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));">
+        <!-- Loaded dynamically from api.categories.getAll() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace Preview Section -->
+  <section id="marketplace-preview" style="padding: 4.5rem 0;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-warning" style="margin-bottom: 0.5rem;">Fresh Harvests</span>
+          <h2 style="font-size: 2.25rem;">Featured Farm Products</h2>
+          <p class="text-muted">Freshly harvested, graded, and dispatched with speed.</p>
+        </div>
+        <a href="pages/marketplace.html" class="btn btn-primary">
+          View All 60+ Products <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div id="home-products-grid" class="grid grid-cols-4">
+        <!-- Products loaded dynamically from backend API -->
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Recommendations Showcase -->
+  <section id="ai-section" style="padding: 4.5rem 0; background-color: var(--primary-50); border-top: 1px solid var(--primary-100); border-bottom: 1px solid var(--primary-100);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-success" style="background: var(--primary-200); color: var(--primary-900);">
+            <i class="fa-solid fa-brain"></i> AI Crop Engine
+          </span>
+          <h2 style="font-size: 2.25rem; margin-top: 0.5rem;">Smart Recommendations</h2>
+          <p class="text-muted">Extensible algorithmic engine matching consumer taste, seasonal freshness, and organic pairing patterns.</p>
+        </div>
+        <span style="font-size: 0.8125rem; color: var(--primary-800); font-weight: 600;">
+          <i class="fa-solid fa-code-fork"></i> Python ML Architecture Ready
+        </span>
+      </div>
+
+      <div id="home-ai-recommendations-grid" class="grid grid-cols-4">
+        <!-- AI Recommendations loaded dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Supply Chain Visualization -->
+  <section id="supply-chain-section" style="padding: 4.5rem 0; background-color: #ffffff;">
+    <div class="container">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto 3.5rem;">
+        <span class="badge badge-info" style="margin-bottom: 0.75rem;">Transparent Pipeline</span>
+        <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">End-to-End Farm Supply Chain</h2>
+        <p class="text-muted">How your agricultural harvest moves from rural fields to urban tables within 24-36 hours.</p>
+      </div>
+
+      <div class="grid grid-cols-4" style="position: relative;">
+        <div class="sc-step-card">
+          <div class="sc-step-number">1</div>
+          <h4 style="margin-bottom: 0.5rem;">Daily Harvest</h4>
+          <p style="font-size: 0.8125rem; color: var(--slate-600);">Farmers hand-harvest crops at peak morning maturity for optimal nutritional retention.</p>
+        </div>
+        <div class="sc-step-card">
+          <div class="sc-step-number">2</div>
+          <h4 style="margin-bottom: 0.5rem;">Quality Grading</h4>
+          <p style="font-size: 0.8125rem; color: var(--slate-600);">Inspected for pesticide residues, moisture levels, and grade size at regional village hubs.</p>
+        </div>
+        <div class="sc-step-card">
+          <div class="sc-step-number">3</div>
+          <h4 style="margin-bottom: 0.5rem;">Refrigerated Transit</h4>
+          <p style="font-size: 0.8125rem; color: var(--slate-600);">Active cold chain fleet with GPS tracking ensures 0% wilting and maximum freshness.</p>
+        </div>
+        <div class="sc-step-card">
+          <div class="sc-step-number">4</div>
+          <h4 style="margin-bottom: 0.5rem;">Direct Doorstep</h4>
+          <p style="font-size: 0.8125rem; color: var(--slate-600);">Delivered directly to consumer doorsteps with contactless verification and complete traceability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logistics Tracking Preview (With Interactive Leaflet Map) -->
+  <section id="logistics-preview" style="padding: 4.5rem 0; background-color: var(--slate-50);">
+    <div class="container">
+      <div class="grid grid-cols-2" style="align-items: center; gap: 3rem;">
+        <div>
+          <span class="badge badge-success" style="margin-bottom: 0.75rem;">Live GPS Telemetry</span>
+          <h2 style="font-size: 2.25rem; margin-bottom: 1rem;">Track Any Shipment Real-Time</h2>
+          <p class="text-muted" style="margin-bottom: 1.5rem;">
+            Watch active cold chain carriers moving from the agricultural heartlands (Nashik, Ludhiana, Guntur) to urban hubs with real-time temperature, speed, and ETA monitoring.
+          </p>
+
+          <form onsubmit="App.previewTrackingOnHome(event)" style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+            <input type="text" id="home-track-order-id" class="form-control" style="max-width: 260px;" placeholder="Enter Order ID (e.g. 2, 3)" value="2">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-satellite-dish"></i> Locate Vehicle
+            </button>
+          </form>
+
+          <div id="home-tracking-info">
+            <!-- Populated on track -->
+          </div>
+        </div>
+
+        <div>
+          <div id="home-map-container" style="height: 380px; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border-light);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Farmers Section -->
+  <section id="farmers-section" style="padding: 4.5rem 0; background-color: #ffffff;">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+        <span class="badge badge-success" style="margin-bottom: 0.75rem;">Meet the Growers</span>
+        <h2 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Champion Farmers</h2>
+        <p class="text-muted">The custodians of Indian fertile soil, practicing sustainable bio-farming and heirloom crop conservation.</p>
+      </div>
+
+      <div id="home-farmers-grid" class="grid grid-cols-3">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Testimonials -->
+  <section style="padding: 4.5rem 0; background-color: var(--primary-900); color: #ffffff;">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+        <span class="badge badge-warning" style="background: rgba(234, 179, 8, 0.2); color: #fef08a;">Testimonials</span>
+        <h2 style="font-size: 2.25rem; color: #ffffff; margin-top: 0.5rem;">Loved by Consumers & Growers</h2>
+      </div>
+
+      <div class="grid grid-cols-3">
+        <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <div style="color: #f59e0b; margin-bottom: 0.75rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p style="font-size: 0.9375rem; color: var(--slate-200); margin-bottom: 1.25rem; line-height: 1.5;">
+            "The Basmati rice and A2 Desi Ghee are extraordinarily pure. Knowing that 85% of my spend goes straight to Farmer Gurpreet is truly empowering."
+          </p>
+          <div style="font-weight: 700;">Dr. Priya Sharma</div>
+          <div style="font-size: 0.75rem; color: var(--primary-300);">Mumbai, Maharashtra</div>
+        </div>
+
+        <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <div style="color: #f59e0b; margin-bottom: 0.75rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p style="font-size: 0.9375rem; color: var(--slate-200); margin-bottom: 1.25rem; line-height: 1.5;">
+            "AgriConnect transformed my farm economics. I get prompt settlements and fair pricing for my Nashik vine tomatoes and grapes with zero commission agent exploitation."
+          </p>
+          <div style="font-weight: 700;">Ramesh Patel</div>
+          <div style="font-size: 0.75rem; color: var(--primary-300);">Farmer, Nashik Valley</div>
+        </div>
+
+        <div class="card" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <div style="color: #f59e0b; margin-bottom: 0.75rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p style="font-size: 0.9375rem; color: var(--slate-200); margin-bottom: 1.25rem; line-height: 1.5;">
+            "Live tracking the delivery van from the farm hub with real-time temperature updates makes AgriConnect feel decades ahead of standard ecommerce apps."
+          </p>
+          <div style="font-weight: 700;">Arun Kumar</div>
+          <div style="font-size: 0.75rem; color: var(--primary-300);">Bengaluru, Karnataka</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section style="padding: 4.5rem 0; background: linear-gradient(135deg, var(--primary-700), var(--primary-900)); color: #ffffff; text-align: center;">
+    <div class="container" style="max-width: 720px;">
+      <h2 style="font-size: 2.5rem; color: #ffffff; margin-bottom: 1rem;">Ready to Experience Genuine Farm Freshness?</h2>
+      <p style="font-size: 1.15rem; color: var(--primary-100); margin-bottom: 2rem;">
+        Join over 50,000 conscious consumers supporting sustainable Indian agriculture.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="pages/marketplace.html" class="btn btn-secondary btn-lg" style="color: var(--primary-900); font-weight: 700;">
+          Shop 60+ Farm Harvests
+        </a>
+        <button class="btn btn-outline btn-lg" style="border-color: #ffffff; color: #ffffff;" onclick="Auth.openAuthModal('register')">
+          Join as a Farmer
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="color: #ffffff; margin-bottom: 1rem;">
+            <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+            <span>AgriConnect</span>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--slate-400); line-height: 1.6; max-width: 340px;">
+            A next-generation smart agricultural marketplace & cold chain supply logistics platform connecting regional growers with consumers.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platform Hubs</h5>
+          <ul class="footer-links">
+            <li><a href="pages/marketplace.html">Marketplace</a></li>
+            <li><a href="pages/customer.html">Customer Hub</a></li>
+            <li><a href="pages/farmer.html">Farmer Portal</a></li>
+            <li><a href="pages/logistics.html">Logistics Network</a></li>
+            <li><a href="pages/admin.html">Admin Control</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Agricultural Categories</h5>
+          <ul class="footer-links">
+            <li><a href="pages/marketplace.html?category=Vegetables">Vegetables</a></li>
+            <li><a href="pages/marketplace.html?category=Fruits">Fruits</a></li>
+            <li><a href="pages/marketplace.html?category=Grains">Grains</a></li>
+            <li><a href="pages/marketplace.html?category=Millets">Millets</a></li>
+            <li><a href="pages/marketplace.html?category=Spices">Spices</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Direct Contact</h5>
+          <p style="font-size: 0.875rem; color: var(--slate-400); margin-bottom: 0.5rem;"><i class="fa-solid fa-envelope"></i> support@agriconnect.com</p>
+          <p style="font-size: 0.875rem; color: var(--slate-400); margin-bottom: 0.5rem;"><i class="fa-solid fa-phone"></i> 1800-AGRI-CONNECT</p>
+          <p style="font-size: 0.875rem; color: var(--slate-400);"><i class="fa-solid fa-location-dot"></i> Agro Logistics Hub, Nashik, India</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 AgriConnect Platform. Designed for Sustainable Agriculture.</div>
+        <div style="display: flex; gap: 1rem;">
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      App.initHome();
+      App.previewTrackingOnHome({ preventDefault: () => {} });
+    });
+  </script>
+</body>
+</html>

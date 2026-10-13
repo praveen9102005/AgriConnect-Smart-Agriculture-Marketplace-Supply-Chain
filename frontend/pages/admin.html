@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations & Analytics - AgriConnect</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0 4rem;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      color: var(--slate-600);
+      margin-bottom: 0.35rem;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+    .admin-nav-item:hover, .admin-nav-item.active {
+      background-color: var(--primary-100);
+      color: var(--primary-800);
+    }
+    .chart-container {
+      position: relative;
+      height: 280px;
+      width: 100%;
+    }
+    @media (max-width: 900px) {
+      .admin-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <span>Agri<span class="text-gradient">Connect</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="admin.html" class="nav-link active">Admin Portal</a></li>
+        <span id="role-nav-links"></span>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="admin-layout">
+
+      <!-- Left Admin Sidebar -->
+      <aside>
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div style="font-weight: 800; font-size: 1.1rem; color: var(--slate-900); margin-bottom: 0.25rem;">Command Center</div>
+          <span class="badge badge-success">System SuperAdmin</span>
+        </div>
+
+        <div class="card">
+          <nav>
+            <a class="admin-nav-item active" data-tab="analytics">
+              <i class="fa-solid fa-chart-line"></i> Analytics & KPIs
+            </a>
+            <a class="admin-nav-item" data-tab="users">
+              <i class="fa-solid fa-users"></i> Manage Users
+            </a>
+            <a class="admin-nav-item" data-tab="farmers">
+              <i class="fa-solid fa-tractor"></i> Manage Farmers
+            </a>
+            <a class="admin-nav-item" data-tab="products">
+              <i class="fa-solid fa-basket-shopping"></i> Manage Products
+            </a>
+            <a class="admin-nav-item" data-tab="orders">
+              <i class="fa-solid fa-boxes-packing"></i> Manage Orders
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Right Admin Content -->
+      <section>
+        
+        <!-- Tab 1: Analytics & KPIs -->
+        <div id="admin-tab-analytics" class="admin-tab-content">
+          <h2 style="margin-bottom: 1.5rem;">Ecosystem Analytics & Operations</h2>
+
+          <!-- Metric Cards Grid -->
+          <div class="grid grid-cols-4" style="margin-bottom: 2rem;">
+            <div class="metric-card">
+              <div class="metric-icon blue"><i class="fa-solid fa-users"></i></div>
+              <div>
+                <div class="metric-value" id="metric-users">0</div>
+                <div class="metric-label">Total Users</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon green"><i class="fa-solid fa-tractor"></i></div>
+              <div>
+                <div class="metric-value" id="metric-farmers">0</div>
+                <div class="metric-label">Verified Farmers</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon purple"><i class="fa-solid fa-seedling"></i></div>
+              <div>
+                <div class="metric-value" id="metric-products">0</div>
+                <div class="metric-label">Live Harvests</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon gold"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+              <div>
+                <div class="metric-value" id="metric-revenue">₹0</div>
+                <div class="metric-label">Total Platform GMV</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Metric Cards Grid -->
+          <div class="grid grid-cols-3" style="margin-bottom: 2rem;">
+            <div class="metric-card">
+              <div class="metric-icon blue"><i class="fa-solid fa-cart-flatbed"></i></div>
+              <div>
+                <div class="metric-value" id="metric-orders">0</div>
+                <div class="metric-label">Orders Processed</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon green"><i class="fa-solid fa-truck-moving"></i></div>
+              <div>
+                <div class="metric-value" id="metric-deliveries">0</div>
+                <div class="metric-label">Active Shipments</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon gold"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div>
+                <div class="metric-value" id="metric-lowstock">0</div>
+                <div class="metric-label">Low Stock Alerts</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart.js Charts Grid -->
+          <div class="grid grid-cols-2" style="margin-bottom: 2rem;">
+            <div class="card">
+              <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-chart-column" style="color: var(--primary-600);"></i> Monthly Sales & Order Volume</h4>
+              <div class="chart-container">
+                <canvas id="chart-monthly-sales"></canvas>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-chart-pie" style="color: var(--amber-warm);"></i> Product Category Distribution</h4>
+              <div class="chart-container">
+                <canvas id="chart-categories"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2">
+            <div class="card">
+              <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-chart-area" style="color: var(--info);"></i> Order Fulfillment Status Breakdown</h4>
+              <div class="chart-container">
+                <canvas id="chart-order-status"></canvas>
+              </div>
+            </div>
+            <div class="card">
+              <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-award" style="color: #7e22ce;"></i> Top Farmer Performance & Revenue</h4>
+              <div class="chart-container">
+                <canvas id="chart-farmer-perf"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Users Management -->
+        <div id="admin-tab-users" class="admin-tab-content" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">Registered Users</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Registered</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Farmers Management -->
+        <div id="admin-tab-farmers" class="admin-tab-content" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">Farmer Producer Directory</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Farmer ID</th>
+                  <th>Name</th>
+                  <th>Region & State</th>
+                  <th>Crop Specialty</th>
+                  <th>Rating</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-farmers-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: Products Management -->
+        <div id="admin-tab-products" class="admin-tab-content" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">Catalogued Harvests</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Crop Title</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Inventory</th>
+                  <th>Farmer Source</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 5: Orders Management -->
+        <div id="admin-tab-orders" class="admin-tab-content" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">All System Orders</h2>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>© 2026 AgriConnect Administration.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/customer.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Admin.init();
+    });
+  </script>
+</body>
+</html>

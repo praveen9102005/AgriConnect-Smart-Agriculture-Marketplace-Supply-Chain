@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace - AgriConnect</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .filter-pill {
+      display: inline-block;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      background-color: var(--slate-100);
+      border: 1px solid var(--slate-200);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-bottom: 0.5rem;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background-color: var(--primary-600);
+      color: #ffffff;
+      border-color: var(--primary-600);
+    }
+    .marketplace-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0 4rem;
+    }
+    @media (max-width: 900px) {
+      .marketplace-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <span>Agri<span class="text-gradient">Connect</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="marketplace.html" class="nav-link active">Marketplace</a></li>
+        <span id="role-nav-links"></span>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="customer.html" class="cart-btn-wrapper btn btn-secondary btn-icon" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="nav-cart-count" class="cart-badge-count">0</span>
+        </a>
+        <div id="nav-auth-actions"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Marketplace Header -->
+  <header style="background: linear-gradient(to bottom, var(--primary-50), #f8fafc); padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--border-light);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1 style="font-size: 2.25rem; margin-bottom: 0.25rem;">Agricultural Marketplace</h1>
+          <p class="text-muted">Fresh regional produce directly from verified farmers. No chemical ripening, cold-chain delivered.</p>
+        </div>
+        <div id="market-products-count" style="font-size: 0.875rem; font-weight: 600; color: var(--primary-800); background: var(--primary-100); padding: 0.4rem 1rem; border-radius: var(--radius-full);">
+          Loading harvests...
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Marketplace Main Content -->
+  <main class="container">
+    <div class="marketplace-layout">
+
+      <!-- Left Filters Sidebar -->
+      <aside>
+        <div class="card" style="position: sticky; top: 5.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.15rem;"><i class="fa-solid fa-sliders" style="color: var(--primary-600);"></i> Filters</h3>
+            <button class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="Marketplace.resetFilters()">
+              Reset
+            </button>
+          </div>
+
+          <!-- Category Filter -->
+          <div style="margin-bottom: 1.5rem;">
+            <label class="form-label" style="margin-bottom: 0.75rem;">Categories</label>
+            <div id="market-categories-list" style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Price Filter -->
+          <div style="margin-bottom: 1.5rem; border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+            <label class="form-label">Price Range (₹)</label>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <input type="number" id="price-min" class="form-control text-sm" placeholder="Min" style="padding: 0.4rem 0.6rem;">
+              <input type="number" id="price-max" class="form-control text-sm" placeholder="Max" style="padding: 0.4rem 0.6rem;">
+              <button class="btn btn-secondary btn-sm" onclick="Marketplace.filterPrice(document.getElementById('price-min').value, document.getElementById('price-max').value)">Go</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+              <button class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.2rem 0.45rem;" onclick="Marketplace.filterPrice(0, 100)">Under ₹100</button>
+              <button class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.2rem 0.45rem;" onclick="Marketplace.filterPrice(100, 300)">₹100 - ₹300</button>
+              <button class="btn btn-outline btn-sm" style="font-size: 0.72rem; padding: 0.2rem 0.45rem;" onclick="Marketplace.filterPrice(300, 1500)">₹300+</button>
+            </div>
+          </div>
+
+          <!-- Rating Filter -->
+          <div style="border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+            <label class="form-label">Minimum Rating</label>
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <button class="btn btn-secondary btn-sm" style="justify-content: flex-start;" onclick="Marketplace.filterRating(4.8)">
+                <span style="color: #f59e0b;"><i class="fa-solid fa-star"></i> 4.8★ & above</span>
+              </button>
+              <button class="btn btn-secondary btn-sm" style="justify-content: flex-start;" onclick="Marketplace.filterRating(4.5)">
+                <span style="color: #f59e0b;"><i class="fa-solid fa-star"></i> 4.5★ & above</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Products Grid & Controls -->
+      <section>
+        <!-- Top Toolbar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; align-items: center; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 0.3rem 0.75rem; width: 100%; max-width: 380px;">
+            <i class="fa-solid fa-magnifying-glass" style="color: var(--slate-400); margin-right: 0.5rem;"></i>
+            <input type="text" id="market-search-input" placeholder="Search crops, fruits, grains, pulses..." style="border: none; outline: none; width: 100%; font-size: 0.875rem;">
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <label style="font-size: 0.8125rem; font-weight: 600; color: var(--slate-600);">Sort:</label>
+            <select id="market-sort-select" class="form-control" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.875rem;">
+              <option value="default">Featured / Default</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="market-products-grid" class="grid grid-cols-3">
+          <!-- Populated dynamically via Marketplace.loadProducts() -->
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="market-pagination" style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>© 2026 AgriConnect Marketplace. Direct Producer to Consumer Agriculture.</p>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/marketplace.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Marketplace.init();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistics & Supply Chain - AgriConnect</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .logistics-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0 4rem;
+    }
+    @media (max-width: 900px) {
+      .logistics-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <span>Agri<span class="text-gradient">Connect</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="logistics.html" class="nav-link active">Logistics Network</a></li>
+        <span id="role-nav-links"></span>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="customer.html" class="cart-btn-wrapper btn btn-secondary btn-icon" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="nav-cart-count" class="cart-badge-count">0</span>
+        </a>
+        <div id="nav-auth-actions"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Logistics KPI Metrics -->
+    <div class="grid grid-cols-3" style="margin: 2.5rem 0 1.5rem;">
+      <div class="metric-card">
+        <div class="metric-icon blue"><i class="fa-solid fa-truck-fast"></i></div>
+        <div>
+          <div class="metric-value" id="logistics-stat-active">2</div>
+          <div class="metric-label">Active Cold Chain Transit</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+          <div class="metric-value" id="logistics-stat-delivered">14</div>
+          <div class="metric-label">Delivered on Time</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon purple"><i class="fa-solid fa-route"></i></div>
+        <div>
+          <div class="metric-value" id="logistics-stat-total">16</div>
+          <div class="metric-label">Total Handled Shipments</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logistics-layout">
+
+      <!-- Left Column: Deliveries List -->
+      <aside>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="font-size: 1.15rem;">Shipment Dispatches</h3>
+          <button class="btn btn-outline btn-sm" onclick="Logistics.loadDeliveries()">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+
+        <div id="logistics-deliveries-list">
+          <!-- Populated dynamically via Logistics.loadDeliveries() -->
+        </div>
+      </aside>
+
+      <!-- Right Column: Active Delivery & Live Map -->
+      <section>
+        <div id="active-delivery-card" style="margin-bottom: 1.5rem;">
+          <!-- Active delivery details and status stepper -->
+        </div>
+
+        <!-- Live Leaflet Map Container -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4><i class="fa-solid fa-location-crosshairs" style="color: var(--primary-600);"></i> Live OpenStreetMap Telemetry</h4>
+            <span style="font-size: 0.75rem; color: var(--slate-500);"><i class="fa-solid fa-satellite"></i> 10s GPS ping rate</span>
+          </div>
+          <div id="logistics-live-map" style="width: 100%; height: 420px; border-radius: var(--radius-lg); overflow: hidden;"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>© 2026 AgriConnect Cold Chain Fleet Logistics.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/logistics.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Logistics.init();
+    });
+  </script>
+</body>
+</html>

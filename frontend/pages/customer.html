@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Hub - AgriConnect</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <style>
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0 4rem;
+    }
+    .dashboard-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      color: var(--slate-600);
+      margin-bottom: 0.35rem;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+    .dashboard-nav-item:hover, .dashboard-nav-item.active {
+      background-color: var(--primary-100);
+      color: var(--primary-800);
+    }
+    @media (max-width: 860px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="logo-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+        <span>Agri<span class="text-gradient">Connect</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+        <li><a href="customer.html" class="nav-link active">Customer Hub</a></li>
+        <span id="role-nav-links"></span>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="customer.html" class="cart-btn-wrapper btn btn-secondary btn-icon" title="View Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="nav-cart-count" class="cart-badge-count">0</span>
+        </a>
+        <div id="nav-auth-actions"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="dashboard-layout">
+
+      <!-- Left Sidebar Navigation -->
+      <aside>
+        <div class="card" style="margin-bottom: 1.5rem;" id="customer-profile-card">
+          <!-- Profile info -->
+        </div>
+
+        <div class="card">
+          <nav>
+            <a class="dashboard-nav-item active" data-tab="cart">
+              <i class="fa-solid fa-cart-shopping"></i> My Shopping Cart
+            </a>
+            <a class="dashboard-nav-item" data-tab="orders">
+              <i class="fa-solid fa-box-archive"></i> Order History
+            </a>
+            <a class="dashboard-nav-item" data-tab="tracking">
+              <i class="fa-solid fa-map-location-dot"></i> Live Route Tracking
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Right Tab Content -->
+      <section>
+        
+        <!-- Tab 1: Cart & Checkout -->
+        <div id="tab-cart" class="dashboard-tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Fresh Produce Cart</h2>
+            <a href="marketplace.html" class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-plus"></i> Add More Items
+            </a>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: flex-start;">
+            <div id="cart-items-container">
+              <!-- Cart items table -->
+            </div>
+            <div id="cart-summary-container">
+              <!-- Order summary & checkout button -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Order History -->
+        <div id="tab-orders" class="dashboard-tab-content" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">Your Farm Direct Orders</h2>
+          <div id="orders-list-container">
+            <!-- Orders list -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Live Logistics Tracking -->
+        <div id="tab-tracking" class="dashboard-tab-content" style="display: none;">
+          <div id="tracking-content-container">
+            <!-- Tracking stepper & map -->
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>© 2026 AgriConnect. Farm Fresh Logistics.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/customer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Customer.init();
+    });
+  </script>
+</body>
+</html>
