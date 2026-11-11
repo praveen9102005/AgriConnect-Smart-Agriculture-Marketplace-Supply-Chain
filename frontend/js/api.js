@@ -3,128 +3,128 @@
  * Centralized HTTP communication with Spring Boot REST API
  */
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'https://agriconnect-s4sr.onrender.com/api';
 
 class ApiClient {
-  static getToken() {
-    return localStorage.getItem('agriconnect_token');
-  }
-
-  static setToken(token) {
-    if (token) {
-      localStorage.setItem('agriconnect_token', token);
-    } else {
-      localStorage.removeItem('agriconnect_token');
-    }
-  }
-
-  static getUser() {
-    const userStr = localStorage.getItem('agriconnect_user');
-    return userStr ? JSON.parse(userStr) : null;
-  }
-
-  static setUser(user) {
-    if (user) {
-      localStorage.setItem('agriconnect_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('agriconnect_user');
-    }
-  }
-
-  static async request(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    const token = this.getToken();
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      ...options.headers
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    static getToken() {
+        return localStorage.getItem('agriconnect_token');
     }
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers
-      });
-
-      if (response.status === 204) {
-        return null;
-      }
-
-      const contentType = response.headers.get('content-type');
-      let data = null;
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json();
-      } else {
-        data = await response.text();
-      }
-
-      if (!response.ok) {
-        const errorMsg = (data && data.message) || response.statusText || 'API Request failed';
-        throw new Error(errorMsg);
-      }
-
-      return data;
-    } catch (err) {
-      console.warn(`API Error [${endpoint}]:`, err.message);
-      throw err;
+    static setToken(token) {
+        if (token) {
+            localStorage.setItem('agriconnect_token', token);
+        } else {
+            localStorage.removeItem('agriconnect_token');
+        }
     }
-  }
 
-  static get(endpoint, params = {}) {
-    const query = new URLSearchParams();
-    Object.entries(params).forEach(([key, val]) => {
-      if (val !== undefined && val !== null && val !== '') {
-        query.append(key, val);
-      }
-    });
-    const queryString = query.toString() ? `?${query.toString()}` : '';
-    return this.request(`${endpoint}${queryString}`, { method: 'GET' });
-  }
+    static getUser() {
+        const userStr = localStorage.getItem('agriconnect_user');
+        return userStr ? JSON.parse(userStr) : null;
+    }
 
-  static post(endpoint, body) {
-    return this.request(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
-  }
+    static setUser(user) {
+        if (user) {
+            localStorage.setItem('agriconnect_user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('agriconnect_user');
+        }
+    }
 
-  static put(endpoint, body) {
-    return this.request(endpoint, {
-      method: 'PUT',
-      body: JSON.stringify(body)
-    });
-  }
+    static async request(endpoint, options = {}) {
+        const url = `${API_BASE_URL}${endpoint}`;
+        const token = this.getToken();
 
-  static patch(endpoint, body) {
-    return this.request(endpoint, {
-      method: 'PATCH',
-      body: JSON.stringify(body)
-    });
-  }
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            ...options.headers
+        };
 
-  static delete(endpoint) {
-    return this.request(endpoint, { method: 'DELETE' });
-  }
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        try {
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
+
+            if (response.status === 204) {
+                return null;
+            }
+
+            const contentType = response.headers.get('content-type');
+            let data = null;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
+
+            if (!response.ok) {
+                const errorMsg = (data && data.message) || response.statusText || 'API Request failed';
+                throw new Error(errorMsg);
+            }
+
+            return data;
+        } catch (err) {
+            console.warn(`API Error [${endpoint}]:`, err.message);
+            throw err;
+        }
+    }
+
+    static get(endpoint, params = {}) {
+        const query = new URLSearchParams();
+        Object.entries(params).forEach(([key, val]) => {
+            if (val !== undefined && val !== null && val !== '') {
+                query.append(key, val);
+            }
+        });
+        const queryString = query.toString() ? `?${query.toString()}` : '';
+        return this.request(`${endpoint}${queryString}`, { method: 'GET' });
+    }
+
+    static post(endpoint, body) {
+        return this.request(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        });
+    }
+
+    static put(endpoint, body) {
+        return this.request(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(body)
+        });
+    }
+
+    static patch(endpoint, body) {
+        return this.request(endpoint, {
+            method: 'PATCH',
+            body: JSON.stringify(body)
+        });
+    }
+
+    static delete(endpoint) {
+        return this.request(endpoint, { method: 'DELETE' });
+    }
 }
 
 // API Resource Endpoints
 const api = {
-  auth: {
-    login: (credentials) => ApiClient.post('/auth/login', credentials),
-    register: (userData) => ApiClient.post('/auth/register', userData),
-    me: () => ApiClient.get('/auth/me')
-  },
-  products: {
-    getAll: (params) => ApiClient.get('/products', params),
-    getFeatured: () => ApiClient.get('/products/featured'),
-    getById: (id) => ApiClient.get(`/products/${id}`),
-    getByFarmer: (farmerId) => ApiClient.get(`/products/farmer/${farmerId}`),
-    create: (data, farmerId) => ApiClient.post(`/products${farmerId ? `?farmerId=${farmerId}` : ''}`, data),
+        auth: {
+            login: (credentials) => ApiClient.post('/auth/login', credentials),
+            register: (userData) => ApiClient.post('/auth/register', userData),
+            me: () => ApiClient.get('/auth/me')
+        },
+        products: {
+            getAll: (params) => ApiClient.get('/products', params),
+            getFeatured: () => ApiClient.get('/products/featured'),
+            getById: (id) => ApiClient.get(`/products/${id}`),
+            getByFarmer: (farmerId) => ApiClient.get(`/products/farmer/${farmerId}`),
+            create: (data, farmerId) => ApiClient.post(`/products${farmerId ? `?farmerId=${farmerId}` : ''}`, data),
     update: (id, data, farmerId) => ApiClient.put(`/products/${id}${farmerId ? `?farmerId=${farmerId}` : ''}`, data),
     delete: (id, farmerId) => ApiClient.delete(`/products/${id}${farmerId ? `?farmerId=${farmerId}` : ''}`),
     updateStock: (id, stock) => ApiClient.patch(`/products/${id}/stock`, { stock })
